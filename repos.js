@@ -33,8 +33,15 @@ module.exports = function (cb) {
         }
       }, function (res) {
         res.pipe(bl(function (error, data) {
-          if (error) err = error
-          else       obj = JSON.parse(data.toString())
+          if (error){
+            err = error
+          } else if (res.statusCode !== 200) {
+            err = new Error(
+              'Status code: ' + res.statusCode + '\n' + data.toString()
+            )
+          } else {
+            obj = JSON.parse(data.toString())
+          }
           rw()
           cb(err, obj)
         }))
