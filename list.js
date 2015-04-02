@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /*
  * Print repos under the jstransformer organization to console
  * Copyright © 2015 Tiancheng “Timothy” Gu
