@@ -41,6 +41,9 @@ module.exports = function (cb) {
             )
           } else {
             obj = JSON.parse(data.toString())
+            obj.sort(function (a, b) {
+              return (a.name > b.name) - (a.name < b.name)
+            })
           }
           rw()
           cb(err, obj)
