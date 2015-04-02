@@ -6,7 +6,10 @@
  */
 
 var repos = require('./repos')(function (err, data) {
-  if (err) throw err
+  if (err) {
+    console.log(err.stack)
+    process.exit(1)
+  }
   data.forEach(function (repo) {
     console.log(repo.name)
   })
