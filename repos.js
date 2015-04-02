@@ -22,7 +22,14 @@ module.exports = function (cb) {
         host: 'api.github.com'
       , path: '/orgs/jstransformers/repos'
       , headers: {
-          'User-Agent': 'Node.js'
+          // https://developer.github.com/v3/#user-agent-required:
+          //
+          // > All API requests MUST include a valid `User-Agent` header.
+          // > Requests with no `User-Agent` header will be rejected. We
+          // > request that you use your GitHub username, or the name of your
+          // > application, for the `User-Agent` header value. This allows us
+          // > to contact you if there are problems.
+          'User-Agent': 'jstransformers'
         }
       }, function (res) {
         res.pipe(bl(function (error, data) {
