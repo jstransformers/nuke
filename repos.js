@@ -19,7 +19,7 @@ module.exports = function (cb) {
     }
     lock.writeLock(function (rw) {
       request
-        .get('https://api.github.com/orgs/jstransformers/repos')
+        .get('https://api.github.com/orgs/jstransformers/repos?per_page=200')
         // https://developer.github.com/v3/#user-agent-required:
         //
         // > All API requests MUST include a valid `User-Agent` header.
@@ -34,9 +34,12 @@ module.exports = function (cb) {
             err.message += '\n' + res.text
           } else {
             obj = res.body
-            obj.sort(function (a, b) {
-              return (a.name > b.name) - (a.name < b.name)
-            })
+                    .filter(function (a) {
+                      return a.name.indexOf('jstransformer') === 0
+                    })
+                    .sort(function (a, b) {
+                      return (a.name > b.name) - (a.name < b.name)
+                    })
           }
           rw()
           cb(err, obj)
