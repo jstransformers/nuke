@@ -21,7 +21,10 @@ var repos   = require('./repos')
 var p = require('path').join.bind(this, argv.root || '')
 
 repos(function (err, obj) {
-  if (err) throw err
+  if (err) {
+    console.log(err.stack)
+    process.exit(1)
+  }
 
   var each = argv.maxJobs ? async.eachLimit.bind(this, obj, argv.maxJobs)
                           : async.each.bind(this, obj)
