@@ -6,6 +6,7 @@
  */
 
 var repos   = require('./repos')
+  , config  = require('./read-config')
   , exec    = require('child_process').exec
   , readdir = require('fs').readdirSync
   , async   = require('async')
@@ -19,7 +20,7 @@ var repos   = require('./repos')
                       + 'simultaneously', parseInt)
                 .parse(process.argv)
 
-var p = require('path').join.bind(this, argv.root || '')
+var p = require('path').join.bind(this, argv.root || config.root || '')
 
 repos(function (err, obj) {
   if (err) {

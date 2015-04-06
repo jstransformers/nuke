@@ -4,7 +4,10 @@
 # Copyright © 2015 Tiancheng “Timothy” Gu
 # MIT-licensed
 
-[ -f config.sh ] && . ./config.sh
+# meh good enough for now
+[ -f config.ini ] && \
+root=$(awk -F '=' '{if (! ($0 ~ /^;/) && $0 ~ /root/) print $2}' config.ini)
+
 cwd="`pwd`"
 
 rm -f bad
