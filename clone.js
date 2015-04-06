@@ -7,6 +7,7 @@
 
 var repos   = require('./repos')
   , exec    = require('child_process').exec
+  , readdir = require('fs').readdirSync
   , async   = require('async')
   , assert  = require('assert')
   , argv    = require('commander')
@@ -34,6 +35,13 @@ repos(function (err, obj) {
 
   each(function (repo, cb) {
     var name = repo.name
+    try {
+      if (!readdir(p(name)).length) throw new Error('now, clone it.')
+      var tail = '\t' + name + '\t(' + (c++) + '/' + TOTAL + ')'
+      console.log('Skipping:' + tail)
+      return cb()
+    } catch (ignored) {}
+
     console.log('Cloning:\t' + name)
     exec('git clone ' + repo.ssh_url + ' ' + p(name), function (err) {
       var tail = '\t' + name + '\t(' + (c++) + '/' + TOTAL + ')'
