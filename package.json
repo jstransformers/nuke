@@ -13,6 +13,11 @@
   "bugs": {
     "url": "https://github.com/jstransformers/nuke/issues"
   },
+  "scripts": {
+    "pretest": "node clone",
+    "david": "node david",
+    "test": "./test.sh"
+  },
   "homepage": "https://github.com/jstransformers/nuke",
   "dependencies": {
     "async": "^0.9.0",
