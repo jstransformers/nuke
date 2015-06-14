@@ -1,0 +1,40 @@
+#!/usr/bin/env node
+
+var github = require('github-repositories');
+var spawnSync = require('child_process').spawnSync;
+var expectedOwners = require('./owners.json').owners;
+
+var res = spawnSync('npm', ['whoami']);
+if (res.error) throw res.error;
+var me = res.stdout.toString().trim();
+
+var ignoredRepos = [
+  'boilerplate',
+  'www',
+  'meta',
+  'nuke'
+];
+
+github('jstransformers', function (err, data) {
+  if (err) throw err;
+  data.forEach(function (repo) {
+    if (ignoredRepos.indexOf(repo.name) !== -1) return;
+    var res = spawnSync('npm', ['owner', 'ls', repo.name]);
+    if (res.error) throw res.error;
+    var owners = res.stdout.toString().split('\n').map(function (owner) {
+      return owner.split(' ')[0];
+    }).filter(Boolean);
+    console.log(repo.name);
+    if (owners.indexOf(me) !== -1) {
+      expectedOwners.forEach(function (owner) {
+        if (owners.indexOf(owner) === -1) {
+          console.log(' - adding ' + owner);
+          var res = spawnSync('npm', ['owner', 'add', owner, repo.name]);
+          if (res.error) throw res.error;
+        }
+      });
+    } else {
+      console.log(' - not an owner');
+    }
+  });
+})
