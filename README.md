@@ -29,6 +29,10 @@ the current working directory.
 
 The root directory of the cloned repos can be specified in `config.ini`.
 
+## add-owners.js
+
+Adds all organization members as owners for each npm package. This will only work for packages of which you are already declared as the owner. For more information, see the [npm owner documentation](https://docs.npmjs.com/cli/owner).
+
 ## config.ini
 
 This file is currently only used to set the root directory for all repos. An
