@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+
+var exec = require('child_process').execSync
+var inquirer = require('inquirer')
+var clone = require('gitclone')
+var rimraf = require('rimraf')
+var replaceInFile = require('replace-in-file')
+var cd = process.chdir
+
+var replace = function (replace, withWhat) {
+  replaceInFile.sync({
+    files: ['package.json', 'README.md', 'index.js'],
+    replace: replace,
+    with: withWhat
+  })
+}
+
+var errHandler = function (err) {
+  console.error(err.stack)
+}
+
+var print = function (data) {
+  console.log(data.stdout)
+  console.error(data.stderr)
+}
+
+var run = function (command) {
+  console.log(exec(command).toString())
+}
+
+var getInfo = function () {
+  return inquirer.prompt([
+    {
+      name: 'humanName',
+      message: 'Name of JSTransformer (capitalized properly)'
+    }
+  ]).then(function (answers) {
+    answers.lowerName = answers.humanName.toLowerCase().replace(' ', '')
+    answers.transformer = `jstransformer-${answers.lowerName}`
+    return answers
+  })
+}
+
+var setup = function (answers) {
+  clone('jstransformers/boilerplate', {dest: answers.transformer}, function () {
+    cd(answers.transformer)
+    run('pwd')
+    rimraf.sync('.git')
+    run('git init')
+    run('yarn')
+    // removes lines until "# jstransformer-foo"
+    replace(/[\w\W]+?(?=# jstransformer-foo)/, '')
+    replace(/foo/g, answers.lowerName)
+    replace(/Foo/g, answers.humanName)
+    console.log('done!')
+  })
+}
+
+getInfo().then(function (answers) {
+  console.log(answers)
+  setup(answers)
+})
