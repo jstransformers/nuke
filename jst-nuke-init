@@ -69,7 +69,7 @@ var getInfo = function () {
         type: "basic",
         username: answers.username,
         password: answers.password
-      }, function () {console.log('authenticated with GitHub')})
+      }).then(() => { console.log('authenticated with GitHub') } )
     }
     answers.lowerName = answers.humanName.toLowerCase().replace(' ', '')
     answers.transformer = `jstransformer-${answers.lowerName}`
@@ -89,7 +89,7 @@ var setup = function (answers) {
         description: `${answers.humanName} support for JSTransformers`,
         homepage: `https://npmjs.com/${answers.transformer}`,
         has_wiki: false
-      }, function () {
+      }).then(() => {
         console.log('Finished making repo on GitHub')
         console.log(`Go to https://travis-ci.org/jstransformers/${answers.transformer} and click enable`)
       })
