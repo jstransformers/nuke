@@ -4,6 +4,7 @@ var program = require('commander')
 
 program
   .option('-c', '--create-repo', 'Creates the repo on GitHub')
+  .option('-y', '--yarn', 'Install dependencies using yarn instead of npm')
   .parse(process.argv)
 
 var {execSync} = require('child_process')
@@ -96,7 +97,7 @@ var setup = function (answers) {
     }
 
     run('git init')
-    run('yarn')
+    run(program.yarn ? 'yarn' : 'npm')
     // removes lines until "# jstransformer-foo"
     replace(/[\w\W]+?(?=# jstransformer-foo)/, '')
     replace(/http:\/\/example.com/g, answers.url)
