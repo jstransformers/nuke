@@ -33,6 +33,10 @@ var getInfo = function () {
     {
       name: 'humanName',
       message: 'Name of JSTransformer (capitalized properly)'
+    },
+    {
+      name: 'url',
+      message: 'URL to find more about the transformer'
     }
   ]).then(function (answers) {
     answers.lowerName = answers.humanName.toLowerCase().replace(' ', '')
@@ -50,6 +54,8 @@ var setup = function (answers) {
     run('yarn')
     // removes lines until "# jstransformer-foo"
     replace(/[\w\W]+?(?=# jstransformer-foo)/, '')
+    replace(/http:\/\/example.com/g, answers.url)
+    replace(/foo/g, answers.lowerName)
     replace(/foo/g, answers.lowerName)
     replace(/Foo/g, answers.humanName)
     console.log('done!')
