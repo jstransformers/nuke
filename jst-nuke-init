@@ -6,7 +6,7 @@ program
   .option('-c', '--create-repo', 'Creates the repo on GitHub')
   .parse(process.argv)
 
-var exec = require('child_process').execSync
+var {execSync} = require('child_process')
 var inquirer = require('inquirer')
 var clone = require('gitclone')
 var rimraf = require('rimraf')
@@ -59,7 +59,7 @@ var print = function (data) {
 }
 
 var run = function (command) {
-  console.log(exec(command).toString())
+  console.log(execSync(command).toString())
 }
 
 var getInfo = function () {
