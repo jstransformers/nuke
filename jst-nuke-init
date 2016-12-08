@@ -106,6 +106,4 @@ var setup = function (answers) {
   })
 }
 
-getInfo().then(function (answers) {
-  setup(answers)
-})
+getInfo().then(answers => { setup(answers) })
