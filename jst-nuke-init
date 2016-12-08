@@ -6,6 +6,9 @@ var clone = require('gitclone')
 var rimraf = require('rimraf')
 var replaceInFile = require('replace-in-file')
 var cd = process.chdir
+var GitHubApi = require('github')
+
+var github = new GitHubApi()
 
 var replace = function (replace, withWhat) {
   replaceInFile.sync({
@@ -16,7 +19,7 @@ var replace = function (replace, withWhat) {
 }
 
 var errHandler = function (err) {
-  console.error(err.stack)
+  if (err) { console.error(err.stack) }
 }
 
 var print = function (data) {
@@ -37,8 +40,22 @@ var getInfo = function () {
     {
       name: 'url',
       message: 'URL to find more about the transformer'
+    },
+    {
+      name: 'username',
+      message: 'GitHub Username (for creating repo)'
+    },
+    {
+      name: 'password',
+      type: 'password',
+      message: 'GitHub Password (for creating repo)'
     }
   ]).then(function (answers) {
+    github.authenticate({
+      type: "basic",
+      username: answers.username,
+      password: answers.password
+    }, function () {console.log('authenticated with GitHub')})
     answers.lowerName = answers.humanName.toLowerCase().replace(' ', '')
     answers.transformer = `jstransformer-${answers.lowerName}`
     return answers
@@ -50,12 +67,22 @@ var setup = function (answers) {
     cd(answers.transformer)
     run('pwd')
     rimraf.sync('.git')
+    github.repos.createForOrg({
+      org: 'jstransformers',
+      name: answers.transformer,
+      description: `${answers.humanName} support for JSTransformers`,
+      homepage: `https://npmjs.com/${answers.transformer}`,
+      has_wiki: false
+    }, function () {
+      console.log('Finished making repo on GitHub')
+      console.log(`Go to https://travis-ci.org/jstransformers/${answers.transformer} and click enable`)
+    })
+
     run('git init')
     run('yarn')
     // removes lines until "# jstransformer-foo"
     replace(/[\w\W]+?(?=# jstransformer-foo)/, '')
     replace(/http:\/\/example.com/g, answers.url)
-    replace(/foo/g, answers.lowerName)
     replace(/foo/g, answers.lowerName)
     replace(/Foo/g, answers.humanName)
     console.log('done!')
@@ -63,6 +90,5 @@ var setup = function (answers) {
 }
 
 getInfo().then(function (answers) {
-  console.log(answers)
   setup(answers)
 })
