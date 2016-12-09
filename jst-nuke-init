@@ -101,7 +101,8 @@ getInfo().then(answers => {
             has_wiki: false
           }).then(() => {
             console.log('Finished making repo on GitHub')
-            console.log(`Go to https://travis-ci.org/jstransformers/${answers.transformer} and click enable`)
+            console.log(`Go to https://travis-ci.org/profile/jstransformers and click sync, and then
+              https://travis-ci.org/jstransformers/${answers.transformer} and click enable`)
           })
             .catch(errHandler)
         })
