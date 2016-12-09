@@ -10,7 +10,6 @@ program
 var {execSync} = require('child_process')
 var inquirer = require('inquirer')
 var clone = require('gitclone')
-var rimraf = require('rimraf')
 var replaceInFile = require('replace-in-file')
 var cd = process.chdir
 var config = require('./read-config')
@@ -87,7 +86,6 @@ getInfo().then(answers => {
   console.log(answers)
   clone('jstransformers/boilerplate', {dest: answers.transformer}, function () {
     cd(answers.transformer)
-    rimraf.sync('.git')
     if (program.createRepo) {
       githubLogin(answers)
         .catch(errHandler)
