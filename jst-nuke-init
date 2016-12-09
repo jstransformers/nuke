@@ -1,0 +1,117 @@
+#!/usr/bin/env node
+
+var program = require('commander')
+
+program
+  .option('-c, --create-repo', 'Creates the repo on GitHub')
+  .option('-y, --yarn', 'Install dependencies using yarn instead of npm')
+  .parse(process.argv)
+
+var {execSync} = require('child_process')
+var inquirer = require('inquirer')
+var clone = require('gitclone')
+var replaceInFile = require('replace-in-file')
+var cd = process.chdir
+var config = require('./read-config')
+
+var questions = [
+  {
+    name: 'humanName',
+    message: 'Name of JSTransformer (capitalized properly)'
+  },
+  {
+    name: 'url',
+    message: 'URL to find more about the transformer'
+  }
+]
+
+
+if (program.createRepo) {
+  var GitHubAPI = require('github')
+  var github = new GitHubAPI()
+}
+
+var replace = function (replace, withWhat) {
+  replaceInFile.sync({
+    files: ['package.json', 'README.md', 'index.js'],
+    replace: replace,
+    with: withWhat
+  })
+}
+
+var errHandler = function (err) {
+  if (err) {
+    if (!err.stack) {
+      err = new Error(err)
+    }
+    console.error(err.stack)
+  }
+}
+
+var run = function (command, output=true) {
+  result = execSync(command).toString()
+  if (output) {
+    console.log(result)
+  }
+}
+
+var githubLogin = function(answers) {
+  return new Promise((reject, resolve) => {
+    if (!config.token) 
+      throw new Error(`please go to
+        https://github.com/settings/tokens
+        and add a token. Put the token in config.ini`)
+
+    try {
+      github.authenticate({
+        type: "token",
+        token: config.token
+      })
+    }
+    catch (e) { return reject(e) }
+    console.log('authenticated with GitHub')
+    resolve()
+  })
+}
+
+var getInfo = function () {
+  return inquirer.prompt(questions).then(function (answers) {
+    answers.lowerName = answers.humanName.toLowerCase().replace(' ', '-')
+    answers.transformer = `jstransformer-${answers.lowerName}`
+    return answers
+  })
+}
+
+getInfo().then(answers => {
+  console.log(answers)
+  clone('jstransformers/boilerplate', {dest: answers.transformer}, function () {
+    cd(answers.transformer)
+    if (program.createRepo) {
+      githubLogin(answers)
+        .catch(errHandler)
+        .then(() => {
+          console.log('Creating repo on GitHub')
+          return github.repos.createForOrg({
+            org: 'jstransformers',
+            name: answers.transformer,
+            description: `${answers.humanName} support for JSTransformers`,
+            homepage: `https://npmjs.com/${answers.transformer}`,
+            has_wiki: false
+          }).then(() => {
+            console.log('Finished making repo on GitHub')
+            console.log(`Go to https://travis-ci.org/profile/jstransformers and click sync, and then
+              https://travis-ci.org/jstransformers/${answers.transformer} and click enable`)
+          })
+            .catch(errHandler)
+        })
+    }
+
+    run('git init')
+    run(program.yarn ? 'yarn' : 'npm install')
+    // removes lines until "# jstransformer-foo"
+    replace(/[\w\W]+?(?=# jstransformer-foo)/, '')
+    replace(/http:\/\/example.com/g, answers.url)
+    replace(/foo/g, answers.lowerName)
+    replace(/Foo/g, answers.humanName)
+  })
+})

@@ -10,4 +10,5 @@ program
   .command('check-deps', 'check dependency versions using david')
   .command('test', 'test all JSTransformers')
   .command('add-owners', 'add all maintainers to all npm projects')
+  .command('init', 'start a JSTransformer using the boilerplate')
   .parse(process.argv);
