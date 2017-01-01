@@ -106,7 +106,7 @@ getInfo().then(answers => {
         })
     }
 
-    run('git init')
+    run(`git remote set-url origin https://github.com/jstransformers/${answers.transformer}`)
     run(program.yarn ? 'yarn' : 'npm install')
     // removes lines until "# jstransformer-foo"
     replace(/[\w\W]+?(?=# jstransformer-foo)/, '')
