@@ -44,7 +44,7 @@ repos(function (err, obj) {
     } catch (ignored) {}
 
     console.log('Cloning:\t' + name)
-    exec('git clone ' + repo.clone_url + ' ' + p(name), function (err) {
+    exec('git clone git@github.com:jstransformers/' + name + '.git' + ' ' + p(name), function (err) {
       var tail = '\t' + name + '\t(' + (c++) + '/' + TOTAL + ')'
       if (err) {
         console.log('Errored:' + tail)
