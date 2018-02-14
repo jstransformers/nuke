@@ -1,0 +1,17 @@
+#!/bin/sh
+# Pulls Boilerplate into every JSTransformer
+# to `bad`.
+# Copyright © 2018 Rob Loach
+# MIT-licensed
+
+cwd="`pwd`"
+
+for d in `echo ${root}jstransformer*/`; do
+  repo="`basename $d`"
+  echo "Processing $repo"
+  cd "$d"
+  git pull git@github.com:jstransformers/boilerplate.git master
+  git push origin master
+
+  cd "$cwd"
+done
