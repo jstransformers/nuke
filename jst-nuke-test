@@ -15,7 +15,6 @@ for d in `echo ${root}jstransformer*/`; do
   repo="`basename $d`"
   echo "Testing $repo"
   cd "$d"
-  rm -rf node_modules
 
   ! [ -e package.json ] || \
   (npm i && npm test) || \
