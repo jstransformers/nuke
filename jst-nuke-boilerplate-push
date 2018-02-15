@@ -1,5 +1,5 @@
 #!/bin/sh
-# Pulls Boilerplate into each package and attempts to push the changes up.
+# Pushes all local changes up to each JSTransformer.
 # Copyright © 2018 RobLoach
 # MIT-licensed
 
