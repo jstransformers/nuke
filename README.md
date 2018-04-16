@@ -33,6 +33,14 @@ The root directory of the cloned repos can be specified in `config.ini`.
 
 Adds all organization members as owners for each npm package. This will only work for packages of which you are already declared as the owner. For more information, see the [npm owner documentation](https://docs.npmjs.com/cli/owner).
 
+## jst-nuke-boilerplate
+
+Updates Boilerplate across all JSTransformers.
+
+## jst-nuke-push
+
+Pushes up all local changes to JSTransformers.
+
 ## config.ini
 
 This file is currently only used to set the root directory for all repos. An

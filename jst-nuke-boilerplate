@@ -1,0 +1,19 @@
+#!/bin/sh
+# Pulls Boilerplate into each package and attempts to push the changes up.
+# Copyright © 2018 RobLoach
+# MIT-licensed
+
+[ -f config.ini ] && \
+root=$(awk -F '=' '{if (! ($0 ~ /^;/) && $0 ~ /root/) print $2}' config.ini)
+
+cwd="`pwd`"
+
+for d in `echo ${root}jstransformer*/`; do
+  repo="`basename $d`"
+  echo "Processing $repo"
+  cd "$d"
+  git pull git@github.com:jstransformers/boilerplate.git master
+  git push origin master
+
+  cd "$cwd"
+done
