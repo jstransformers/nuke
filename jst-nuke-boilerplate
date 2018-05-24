@@ -12,7 +12,7 @@ for d in `echo ${root}jstransformer*/`; do
   repo="`basename $d`"
   echo "Processing $repo"
   cd "$d"
-  git pull git@github.com:jstransformers/boilerplate.git master
+  git pull --no-edit git@github.com:jstransformers/boilerplate.git master
   git push origin master
 
   cd "$cwd"
