@@ -4,11 +4,15 @@
  * MIT-licensed
  */
 
-var github = require('github-repositories')
+var github = require('github-org-repos')
 
 module.exports = function (cb) {
-  github('jstransformers', function (err, data) {
-    if (err) return cb(err, data)
+  var opts = {
+    org: 'jstransformers'
+  }
+  github(opts, function (err, data) {
+    if (err)
+      return cb(err, data)
     cb(null, data.filter(function (a) {
                return a.name.indexOf('jstransformer') === 0
              }))
