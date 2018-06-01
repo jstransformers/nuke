@@ -55,7 +55,6 @@ repos(function (err, obj) {
       cb()
     })
   }, function () {
-  console.log('dsfasdfafdsa')
     if (errored.length) {
       console.log('Cloning failed:')
       errored.forEach(function (repo) {
