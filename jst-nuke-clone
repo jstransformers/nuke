@@ -24,7 +24,7 @@ var p = require('path').join.bind(this, argv.root || config.root || '')
 
 repos(function (err, obj) {
   if (err) {
-    console.log(err.stack)
+    console.log(err)
     process.exit(1)
   }
 
