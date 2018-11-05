@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var github = require('github-repositories');
+var repos = require('./repos');
 var spawnSync = require('child_process').spawnSync;
 var expectedOwners = require('./owners.json').owners;
 
@@ -15,7 +15,7 @@ var ignoredRepos = [
   'nuke'
 ];
 
-github('jstransformers', function (err, data) {
+repos(function (err, data) {
   if (err) throw err;
   data.forEach(function (repo) {
     if (ignoredRepos.indexOf(repo.name) !== -1) return;
