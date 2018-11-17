@@ -31,7 +31,7 @@
     "ini": "^1.3.3",
     "inquirer": "^5.2.0",
     "replace-in-file": "^3.4.0",
-    "superagent": "^3.8.2"
+    "superagent": "^4.0.0"
   },
   "bin": {
     "jst-nuke": "index.js"
