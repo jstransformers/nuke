@@ -2,3 +2,4 @@ jstransformer*
 node_modules
 /config.ini
 /bad
+/package-lock.json

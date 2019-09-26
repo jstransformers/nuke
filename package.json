@@ -14,9 +14,9 @@
     "url": "https://github.com/jstransformers/nuke/issues"
   },
   "scripts": {
-    "pretest": "node clone",
+    "pretest": "node ./jst-nuke-clone",
     "david": "node david",
-    "test": "./test.sh"
+    "test": "./jst-nuke-test"
   },
   "homepage": "https://github.com/jstransformers/nuke",
   "dependencies": {
