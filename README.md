@@ -1,7 +1,5 @@
 # nuke (Better name welcome)
 
-
-
 Batch editing tools for repos under jstransformers organization.
 
 ## clone.js
