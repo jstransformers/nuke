@@ -1,7 +1,5 @@
 # nuke (Better name welcome)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/jstransformers/nuke.svg)](https://greenkeeper.io/)
-
 Batch editing tools for repos under jstransformers organization.
 
 ## clone.js
