@@ -29,7 +29,7 @@
     "github-org-repos": "^1.0.2",
     "github-repositories": "^3.0.0",
     "ini": "^1.3.3",
-    "inquirer": "^6.2.1",
+    "inquirer": "^7.0.5",
     "replace-in-file": "^4.0.0",
     "superagent": "^5.0.2"
   },
